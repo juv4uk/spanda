@@ -26,21 +26,27 @@ THAT вже має механізм масштабування через фіз
 
 ## Компоненти
 
-Власник уже придбав конкретні мікросхеми для матриці ключів — які саме,
-ще не зафіксовано тут. Загальна категорія компонентів (для контексту,
-не як прийняте рішення): аналогові crosspoint-перемикачі з послідовним
-цифровим інтерфейсом конфігурації (наприклад клас пристроїв: AD75019,
-ADV3200/ADV3201, LMH6583, MT8816) — усі керуються послідовним
-протоколом, що природно лягає на FPGA як контролер. **Це приклади
-категорії, не підтверджений вибір** — точні куплені мікросхеми власник
-уточнить окремо.
+**Підтверджено (2026-09-30, з розмови 2026-06-12 — див.
+[`2026-06-12-e-p-dance-origin.md`](2026-06-12-e-p-dance-origin.md)):
+MT8816AE** (Zarlink/Microsemi), 10 штук куплено. Аналоговий crosspoint
+8×16, 128 точок перетину, послідовне керування, ±12В аналоговий сигнал,
+~100Ω опір ключа (відомий параметр моделі, не проблема). Живлення: +5В
+логіка + ±12В аналог — потрібне двополярне живлення. Керується через
+SPI від Tang Primer 25K.
+
+Розглянуті й відхилені альтернативи: CD4067, ADG1606 (простіші,
+доступніші, але MT8816 обрано свідомо). Раніше в цьому документі
+згадані AD75019/ADV3200/ADV3201/LMH6583 були лише прикладами категорії
+до підтвердження — фактичний вибір інший.
 
 ## Що далі
 
-- [ ] Уточнити точні куплені мікросхеми (owner, pending)
-- [ ] Задокументувати їхній інтерфейс керування й як FPGA з ним говоритиме
+- [x] Уточнити точні куплені мікросхеми — MT8816AE, підтверджено
+- [ ] Задокументувати SPI-протокол MT8816AE і як FPGA (Tang Primer 25K /
+      `zlc_core`) з ним говоритиме
+- [ ] Вирішити двополярне живлення (+5В/±12В) для аналогової частини
 - [ ] Визначити розмір матриці (скільки входів/виходів потрібно для
-      перших обчислювальних елементів)
+      перших обчислювальних елементів — RC-ядро e/π)
 
 ---
 
@@ -68,18 +74,24 @@ than a one-off physical cable state.
 
 ### Components
 
-The owner has already purchased specific ICs for the switch matrix —
-which ones is not yet recorded here. The general component category (for
-context, not as a confirmed choice): analog crosspoint switches with a
-serial digital configuration interface (example device class: AD75019,
-ADV3200/ADV3201, LMH6583, MT8816) — all controlled via a serial protocol
-that maps naturally onto an FPGA as controller. **These are category
-examples, not a confirmed selection** — the owner will specify the
-actual purchased parts separately.
+**Confirmed (2026-09-30, from the 2026-06-12 conversation — see
+[`2026-06-12-e-p-dance-origin.md`](2026-06-12-e-p-dance-origin.md)):
+MT8816AE** (Zarlink/Microsemi), 10 units purchased. 8×16 analog
+crosspoint, 128 crosspoints, serial control, ±12V analog signal, ~100Ω
+switch resistance (a known model parameter, not a problem). Power: +5V
+logic + ±12V analog — needs a bipolar supply. Controlled via SPI from
+the Tang Primer 25K.
+
+Considered and rejected alternatives: CD4067, ADG1606 (simpler, more
+available, but MT8816 chosen deliberately). AD75019/ADV3200/ADV3201/
+LMH6583, mentioned earlier in this document, were only category
+examples pending confirmation — the actual choice differs.
 
 ### Next
 
-- [ ] Confirm the exact purchased ICs (owner, pending)
-- [ ] Document their control interface and how the FPGA will talk to it
+- [x] Confirm the exact purchased ICs — MT8816AE, confirmed
+- [ ] Document MT8816AE's SPI protocol and how the FPGA (Tang Primer
+      25K / `zlc_core`) will talk to it
+- [ ] Resolve the bipolar (+5V/±12V) supply for the analog side
 - [ ] Determine matrix size (how many inputs/outputs the first computing
-      elements need)
+      elements need — the e/π RC core)
